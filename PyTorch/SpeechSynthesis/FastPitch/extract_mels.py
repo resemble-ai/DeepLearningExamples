@@ -66,15 +66,15 @@ def parse_args(parser):
                         help='Maximum audiowave value')
     parser.add_argument('--sampling-rate', default=22050, type=int,
                         help='Sampling rate')
-    parser.add_argument('--filter-length', default=1024, type=int,
+    parser.add_argument('--filter-length', default=2048, type=int,
                         help='Filter length')
-    parser.add_argument('--hop-length', default=256, type=int,
+    parser.add_argument('--hop-length', default=275, type=int,
                         help='Hop (stride) length')
-    parser.add_argument('--win-length', default=1024, type=int,
+    parser.add_argument('--win-length', default=1100, type=int,
                         help='Window length')
-    parser.add_argument('--mel-fmin', default=0.0, type=float,
+    parser.add_argument('--mel-fmin', default=55.0, type=float,
                         help='Minimum mel frequency')
-    parser.add_argument('--mel-fmax', default=8000.0, type=float,
+    parser.add_argument('--mel-fmax', default=11025.0, type=float,
                         help='Maximum mel frequency')
     # Duration extraction
     parser.add_argument('--extract-mels', action='store_true',

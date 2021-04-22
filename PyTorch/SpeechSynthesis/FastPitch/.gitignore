@@ -14,3 +14,5 @@ __pycache__
 *.swp
 *.swo
 *.swn
+
+*LJSpeech-1.1/

@@ -3,7 +3,7 @@
 set -e
 
 DATA_DIR="LJSpeech-1.1"
-TACO_CH=${TACO_CH:-"pretrained_models/tacotron2/nvidia_tacotron2pyt_fp16.pt"}
+TACO_CH=${TACO_CH:-"pretrained_models/tacotron2/nvidia_tacotron2pyt_fp32_20190427"}
 for FILELIST in ljs_audio_text_train_filelist.txt \
                 ljs_audio_text_val_filelist.txt \
                 ljs_audio_text_test_filelist.txt \

@@ -36,7 +36,7 @@ from collections import defaultdict, OrderedDict
 from contextlib import contextmanager
 
 import numpy as np
-import nvidia_dlprof_pytorch_nvtx as pyprof
+# import nvidia_dlprof_pytorch_nvtx as pyprof
 import torch
 import torch.cuda.profiler as profiler
 import torch.distributed as dist
@@ -69,7 +69,11 @@ def parse_args(parser):
                         help='Path to dataset')
     parser.add_argument('--log-file', type=str, default=None,
                         help='Path to a DLLogger log file')
-    parser.add_argument('--pyprof', action='store_true', help='Enable pyprof profiling')
+    parser.add_argument(
+        '--pyprof', 
+        action='store_true', 
+        default=False,
+        help='Enable pyprof profiling')
 
     training = parser.add_argument_group('training setup')
     training.add_argument('--epochs', type=int, required=True,
