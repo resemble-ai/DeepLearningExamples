@@ -90,3 +90,7 @@ def english_cleaners(text):
     text = expand_abbreviations(text)
     text = collapse_whitespace(text)
     return text
+
+
+def as_is(text):
+    return text

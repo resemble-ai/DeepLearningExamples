@@ -31,6 +31,10 @@ def get_symbols(symbol_set='english_basic'):
         _accented = 'áçéêëñöøćž'
         _letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
         symbols = list(_punctuation + _math + _special + _accented + _letters) + _arpabet
+
+    elif symbol_set == "IPA":
+        symbols = list(u" ^pɹˈɪntŋ,ðoʊlisɛwˌʃːɑæzəkɜdfɚʌmɔᵻb~v.aɡeɾɐuθʒjh;ʔ:r!?x")
+
     else:
         raise Exception("{} symbol set does not exist".format(symbol_set))
 
@@ -38,7 +42,7 @@ def get_symbols(symbol_set='english_basic'):
 
 
 def get_pad_idx(symbol_set='english_basic'):
-    if symbol_set in {'english_basic', 'english_basic_lowercase'}:
+    if symbol_set in {'english_basic', 'english_basic_lowercase', "IPA"}:
         return 0
     else:
         raise Exception("{} symbol set not used yet".format(symbol_set))
