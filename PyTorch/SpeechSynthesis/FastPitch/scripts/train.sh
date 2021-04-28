@@ -2,12 +2,13 @@
 
 export OMP_NUM_THREADS=1
 
-: ${NUM_GPUS:=1}
+: ${NUM_GPUS:=2}
 : ${BS:=32}
-: ${GRAD_ACCUMULATION:=1}
+: ${GRAD_ACCUMULATION:=4}
 : ${OUTPUT_DIR:="./output"}
 : ${AMP:=false}
 : ${EPOCHS:=1500}
+: ${DATASET=FastPitch_LJSpeech-1.1}
 
 [ "$AMP" == "true" ] && AMP_FLAG="--amp"
 
@@ -25,10 +26,10 @@ python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} train.py \
     --cuda \
     -o "$OUTPUT_DIR/" \
     --log-file "$OUTPUT_DIR/nvlog.json" \
-    --dataset-path LJSpeech-1.1 \
+    --dataset-path $DATASET \
     --training-files filelists/ljs_mel_dur_pitch_text_train_filelist.txt \
     --validation-files filelists/ljs_mel_dur_pitch_text_test_filelist.txt \
-    --pitch-mean-std-file LJSpeech-1.1/pitch_char_stats__ljs_audio_text_train_filelist.json \
+    --pitch-mean-std-file $DATASET/pitch_char_stats__ljs_audio_text_train_filelist.json \
     --epochs ${EPOCHS} \
     --epochs-per-checkpoint 100 \
     --warmup-steps 1000 \
@@ -40,4 +41,6 @@ python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} train.py \
     --pitch-predictor-loss-scale 0.1 \
     --weight-decay 1e-6 \
     --gradient-accumulation-steps ${GRAD_ACCUMULATION} \
-    ${AMP_FLAG}
+    ${AMP_FLAG} \
+    --symbol-set "IPA" \
+    --text-cleaners "as_is" 

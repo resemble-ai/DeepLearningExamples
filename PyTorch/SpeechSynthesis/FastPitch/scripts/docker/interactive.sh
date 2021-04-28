@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 PORT=${PORT:-8888}
-GPU=1
+# GPU="1,3"
+    # --gpus '"device=$GPU"' \
 docker run -it \
-    --gpus device=$GPU \
-    --cpuset-cpus="0-4" \
     --rm \
+    --gpus '"device=1,3"' \
     --ipc=host \
     -e CUDA_VISIBLE_DEVICES \
+    -p $PORT:$PORT \
     -v $PWD:/workspace/fastpitch/ fastpitch:latest bash 
 
-    # -p $PORT:$PORT \
+    # --cpuset-cpus="12-23" \
