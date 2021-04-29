@@ -12,7 +12,18 @@ if __name__ == "__main__":
     for fname in tqdm(files):
         stem = fname.stem
         taco_mel = np.load(fname)
+        taco_f0 = np.load(fname.parent / "f0_frames" / f"{stem}.npy")
         fp_mel = torch.load(FP_ROOT / f"{stem}.pt")
+
+        # # # The shapes of f0 are different:
+        # # - Resembletron: [T, 2], values are normalized somehow.
+        # # - FastPitch: mean pitch of characters. 
+        # #     shape=[T'], values seem to be Z-normalized. 
+        # #     (unvoiced chars have F0 = 0.0)  
+
+        # taco_f0 = np.load(fname.parent.parent / "f0_frames" / f"{stem}.npy")
+        # fp_f0 = torch.load(FP_ROOT.parent / "pitch_char" / f"{stem}.pt" )
+        # dur = torch.load(FP_ROOT.parent / "durations" / f"{stem}.pt")
         assert taco_mel.shape[1] == fp_mel.shape[1]
 
     print(f"All {len(files)} (resemble, fastpitch) mel pairs have the same lengths.")
@@ -21,7 +32,6 @@ if __name__ == "__main__":
 # # import matplotlib.pyplot as plt
 
 # fig, axs = plt.subplots(2, 1)
-
 # for ax, title, mel in zip(
 #     axs, 
 #     ["Resembletron", "FastPitch"],
@@ -66,7 +76,15 @@ if __name__ == "__main__":
 #   2. We can just ignore the mels extracted by FastPitch anyway 
 #      because the number of frames is the same.
 #      Just use Resembletron's mel and the (duration, pitch) from FastPitch. 
+#   3. Duration is a problem because input to FP is char...
 
 # After I killed the zombies:
 # 1. the resources (RAM, GPU RAMs) are released!
-# 2. data iteration is still slow:  | 500/13100 [01:03<5:53:30,  1.68s/it]
+# 2. data iteration in my FastPitch docker is still slow: 500/13100 [01:03<5:53:30,  1.68s/it]
+
+# OK, the problem is that previous experiments were executed on HDD.
+# On the main disk (SSD), the speed is like:
+# (docker): 13100/13100 [00:07<00:00, 1768.47it/s]
+
+# However, training on SSD is only as fast as the training on HDD
+# 31728.98 frames/s | took 0.54 s
